@@ -154,15 +154,17 @@ export const listAll = query({
 
     let registrations: Doc<"registrations">[];
 
-    if (args.eventId) {
+    if (args.eventId !== undefined) {
+      const eventId = args.eventId;
       registrations = await ctx.db
         .query("registrations")
-        .withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+        .withIndex("by_event", (q) => q.eq("eventId", eventId))
         .collect();
-    } else if (args.status) {
+    } else if (args.status !== undefined) {
+      const status = args.status;
       registrations = await ctx.db
         .query("registrations")
-        .withIndex("by_status", (q) => q.eq("status", args.status))
+        .withIndex("by_status", (q) => q.eq("status", status))
         .collect();
     } else {
       registrations = await ctx.db.query("registrations").collect();
